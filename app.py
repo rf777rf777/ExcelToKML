@@ -1,9 +1,17 @@
 import pandas
 import simplekml
+import sys
+import os
 
-fileName = '屏東_已編輯'
+application_path = os.path.dirname(sys.executable)
 
-excel = pandas.ExcelFile('{}.xlsx'.format(fileName))
+fileName = ''
+#巡覽照片資料夾
+for file in os.listdir(application_path):
+    if (file.lower()).endswith('xlsx'):
+        fileName = file
+path = application_path+'/'+fileName
+excel = pandas.ExcelFile(path)
 
 sheetNamesList = excel.sheet_names 
 #df = pandas.read_excel("屏東_已編輯.xlsx").fillna('')
@@ -37,4 +45,4 @@ for layersItem in layers:
 							 		coords = [(data.ix[i]['E'],data.ix[i]['N'])])
 		
 
-kml.save('456{}.kml'.format(fileName))
+kml.save(application_path+"/"+'{}.kml'.format(fileName.split('.')[0]))
