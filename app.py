@@ -33,9 +33,10 @@ def createKML(filePath):
 	for layersItem in layers:
 		data = excel.parse(layersItem.name).fillna('')
 		for i in range(len(data)):
-			point = layersItem.newpoint(name = data.ix[i]['站名'],
-								 		description = data.ix[i]['所在鄉鎮']	,	
-								 		coords = [(data.ix[i]['E'],data.ix[i]['N'])])
+			point = layersItem.newpoint(
+				name = data.ix[i]['站名'],			 		
+				description = data.ix[i]['所在鄉鎮']	,	
+				coords = [(data.ix[i]['E'],data.ix[i]['N'])])
 		complete += 1
 		completeInTerminal(complete,len(layers))
 	return kml
