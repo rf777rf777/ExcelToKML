@@ -5,3 +5,6 @@
 /build/
 /dist/
 app.spec
+
+*.kml
+*.xlsx
