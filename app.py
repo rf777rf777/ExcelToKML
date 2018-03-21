@@ -8,7 +8,7 @@ def findXlsxFilePath(appPath):
 	for file in os.listdir(appPath):
 		if (file.lower()).endswith('xlsx'):
 			fileName = file
-	path = appPath + '/{}'.format(fileName)
+	path = appPath + '/{0}'.format(fileName)
 
 	return path
 
@@ -18,7 +18,7 @@ def createKML(filePath):
 	kml = simplekml.Kml()
 	doc = kml.newdocument(name = "Test")
 	layers = []
-	
+		
 	for sheet_name in sheetNamesList:
 		layers.append(doc.newfolder(name= sheet_name))
 
@@ -47,20 +47,25 @@ def completeInTerminal(complete,total):
 	sys.stdout.flush()
 
 def main():
-	#if執行exe檔
-	if getattr(sys, 'frozen', False):
-		filePath = findXlsxFilePath(os.path.dirname(sys.executable))
-	#if直接執行.py檔
-	elif __file__:
-		filePath = findXlsxFilePath(os.path.abspath(os.path.dirname(__file__)))
 	try:
-		kml = createKML(filePath)		
-		kml.save('{}.kml'.format(filePath.split('.')[0]))		
+		#if執行exe檔
+		if getattr(sys, 'frozen', False):
+			filePath = findXlsxFilePath(os.path.dirname(sys.executable))
+		#if直接執行.py檔
+		elif __file__:
+			filePath = findXlsxFilePath(os.path.abspath(os.path.dirname(__file__)))
+		kml = createKML(filePath)
+		outputPath = '{}.kml'.format(filePath.rpartition('.')[0])
+		kml.save(outputPath)		
+		print('\n輸出路徑：{}'.format(outputPath))
 	except Exception as e:
 		print('發生例外狀況：{0} \n程式停止！'.format(e))
 
+if __name__ == '__main__':
+	main()
 
-if __name__ == "__main__":
-    main()
-    if os.name == 'nt':
-    	input("\n<<< 按任意鍵關閉視窗 >>>")
+if os.name == 'nt':
+	input("\n<<< 按Enter關閉視窗 >>>")
+
+#pyinstaller無法打包pandas?
+#https://stackoverflow.com/questions/47318119/no-module-named-pandas-libs-tslibs-timedeltas-in-pyinstaller
